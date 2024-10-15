@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Uploader and Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #response {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+    </style>
+    <script src="server.js"></script>
+</head>
+<body>
+    <h1>Upload Your Book</h1>
+    <input type="file" id="bookUpload" accept=".txt,.pdf" />
+    <br><br>
+    <h2>Chat with GPT</h2>
+    <input type="text" id="userInput" placeholder="Ask something..." />
+    <button id="sendBtn">Send</button>
+    <div id="response"></div>
+
+    <script>
+        document.getElementById('sendBtn').addEventListener('click', async () => {
+            const input = document.getElementById('userInput').value;
+            const responseDiv = document.getElementById('response');
+
+            const response = await fetch('http://localhost:3000/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: input }),
+            });
+
+            const data = await response.json();
+            responseDiv.innerText = data.reply;
+        });
+    </script>
+</body>
+</html>
